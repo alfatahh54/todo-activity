@@ -11,10 +11,13 @@ import (
 
 	"github.com/alfatahh54/todo-activity/utils"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/golang-migrate/migrate"
+	"github.com/golang-migrate/migrate/database/mysql"
+	_ "github.com/golang-migrate/migrate/source/file"
 )
 
 func DbConnect(dbUser, dbPass, dbHost, dbPort, dbName string) *sql.DB {
-	dbAccess := dbUser + ":" + dbPass + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?parseTime=true&loc=Asia%2FJakarta"
+	dbAccess := dbUser + ":" + dbPass + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?multiStatements=true&parseTime=true&loc=Asia%2FJakarta"
 	db, err := sql.Open("mysql", dbAccess)
 	if err != nil {
 		panic(err.Error())
@@ -68,6 +71,14 @@ func init() {
 		return
 	}
 	DB = Open()
+	driver, _ := mysql.WithInstance(DB, &mysql.Config{})
+	fmt.Println("dsad", driver)
+reconnect:
+	m, _ := migrate.NewWithDatabaseInstance("file:///migrations", "mysql", driver)
+	if m == nil {
+		goto reconnect
+	}
+	fmt.Println(m)
 	Db.DB = DB
 }
 func MysqlQuery(query string, name string, fields []string, params ...interface{}) []interface{} {
