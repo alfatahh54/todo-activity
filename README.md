@@ -1,19 +1,47 @@
 # Todo-Activity
 This is application CRUD Todo-Activity with gin Golang and use database MySql
-## Database mysql migrtion
-To migrate database please set environment on file ".env" like example on file ".env.example". 
-Install golang-migrate cmd 
+## Database mysql migration
+* Set environment on file ".env" like example on file ".env.example". 
+* Install golang-migrate cmd 
 ``` bash
 $ # Go 1.15 and below
 $ go get -tags 'mysql' -u github.com/golang-migrate/migrate/cmd/migrate
 $ # Go 1.16+
 $ go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 ```
-For migrate up database please run on bash
+* Migrate up database
 ``` bash
+$ # For up all
 $ make migrateup
+$ # For up n version migration
+$ make migrateup n=total_version
 ```
-For migrate down please run on bash
+* Migrate down database
 ``` bash
-$ make migrateup
+$ # For down all
+$ make migratedown
+$ # For down n version migration
+$ make migrateup n=total_version
+```
+* Migrate create
+* Create new file migration
+``` bash
+$ make migratecreate name=file_name
+```
+## Development
+* Install gin-bin
+``` bash
+$ go install github.com/codegangsta/gin@latest
+```
+* run dev
+``` bash
+$ make dev
+```
+## Build
+``` bash
+$ make build
+```
+# Start
+``` bash
+$ make start
 ```
